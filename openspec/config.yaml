@@ -1,0 +1,75 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Node.js (Gulp, Antora, BrowserSync) at repo root; 19 Backstage Software Templates in scaffolder-templates/ spanning Java/Spring Boot, Quarkus, EAP8, Go, Python, Node.js/React, and Azure Java.
+  Architecture: Backstage scaffolder template.yaml + skeleton/ + manifests/ (Helm, Tekton, ArgoCD); AsciiDoc workshop docs in documentation/; custom Antora extensions in lib/.
+  Testing: No root test runner; template skeletons carry their own frameworks (Jest, Maven Surefire, go test, etc.).
+  Style: Backstage template conventions, catalog-info.yaml in skeletons, Apache-2.0, GitHub Actions docs CI on master push.
+
+strict_tdd: false
+
+testing:
+  strict_tdd: false
+  detected: "2026-07-14"
+  runner:
+    available: false
+    command: ""
+    framework: ""
+  layers:
+    unit:
+      available: false
+      tool: ""
+    integration:
+      available: false
+      tool: ""
+    e2e:
+      available: false
+      tool: ""
+  coverage:
+    available: false
+    command: ""
+  quality:
+    linter:
+      available: false
+      command: ""
+    type_checker:
+      available: false
+      command: ""
+    formatter:
+      available: false
+      command: ""
+  notes: |
+    Root repo has no test/lint/format tooling. Template skeletons include per-stack test configs
+    (e.g. Jest in wheres-teddy/python-teddy frontends, Maven in Java templates, go test in vote-api-go).
+    SDD verify phase should scope verification to affected template skeletons or docs CI when applicable.
+
+rules:
+  proposal:
+    - Identify affected template(s) by name and provider (gitlab/azure)
+    - Include rollback plan for manifest or skeleton changes
+    - Note cross-template impact when editing shared patterns
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+    - Reference template.yaml parameter names explicitly
+  design:
+    - Document skeleton vs manifests vs template.yaml boundaries
+    - Include sequence diagrams for scaffolder action flows when complex
+  tasks:
+    - Group by template and artifact type (template.yaml, skeleton, manifests)
+    - Keep tasks completable in one session
+  apply:
+    guidelines:
+      - Follow existing Backstage template and catalog-info conventions
+      - Match skeleton stack patterns (Maven, npm, go mod) per template
+      - Minimize scope — one template or shared concern per change when possible
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: "npm run workshop"
+    docs_ci: ".github/workflows/docs.yml"
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas to main specs
+    - Preserve template skeleton test configs when modifying scaffolds

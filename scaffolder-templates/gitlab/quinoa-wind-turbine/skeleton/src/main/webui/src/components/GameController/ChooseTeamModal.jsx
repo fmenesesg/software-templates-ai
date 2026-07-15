@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { TEAMS_CONFIG } from '../../Config';
+import { TEAMS_CONFIG, TEAM_LABELS_ES } from '../../Config';
 
 const TeamContainer = styled.div`
   position: fixed;
@@ -56,13 +56,13 @@ export default function ChooseTeamModal(props) {
   return (
     <TeamContainer>  
       <TeamHeader>
-        Choose your team:
+        Elige tu equipo:
       </TeamHeader>
       <TeamSelectionButton onClick={() => props.onClick(1)}>
-        <div className='button1'>Team {TEAMS_CONFIG[0].name}</div>     
+        <div className='button1'>{TEAM_LABELS_ES[0]}</div>     
       </TeamSelectionButton>
       <TeamSelectionButton onClick={() => props.onClick(2)}>
-        <div className='button2'>Team {TEAMS_CONFIG[1].name}</div>
+        <div className='button2'>{TEAM_LABELS_ES[1]}</div>
       </TeamSelectionButton>          
     </TeamContainer>
   );

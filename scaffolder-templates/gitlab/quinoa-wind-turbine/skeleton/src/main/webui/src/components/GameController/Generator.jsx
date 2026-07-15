@@ -4,33 +4,23 @@ import {
   TAP_POWER, ENABLE_BLOWING, ENABLE_TAPPING, ENABLE_SWIPING, IS_TOUCH_DEVICE,
 } from '../../Config';
 import { powerApi, sensors } from '../../api';
-import Turbine from "./Turbine";
 
 const GeneratorDiv = styled.div`
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 
-  svg {
-    cursor: pointer;
-    height: 400px;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  }
-
-  .turbine {
-    transform-origin: 5020px 1250px;
-    transition: all 400ms;
-    transform: rotate(${(props) => props.generated * 3}deg);
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  }
-
-  .turbine-item {
-    fill: ${(props) => props.color};
-  }
+const BadgeImage = styled.img`
+  height: 320px;
+  width: auto;
+  cursor: pointer;
+  user-select: none;
+  image-rendering: auto;
+  transform: rotate(${(props) => props.generated * 3}deg);
+  transform-origin: center center;
+  transition: transform 400ms;
 `;
 
 const GeneratedIndicatorDiv = styled.div`
@@ -42,6 +32,7 @@ const GeneratedIndicatorDiv = styled.div`
   font-weight: bold;
   line-height: 3rem;
   margin-top: 40px;
+  color: #007bff;
 
   &:after {
     content: '${(props) => props.unit}';
@@ -52,7 +43,6 @@ const GeneratedIndicatorDiv = styled.div`
 `;
 
 function Generator(props) {
-  // Volume meter
   if (ENABLE_BLOWING) {
     useEffect(() => {
       const interval = setInterval(() => {
@@ -68,7 +58,6 @@ function Generator(props) {
     }, []);
   }
 
-  // Swipe
   if (ENABLE_SWIPING) {
     useEffect(() => {
       sensors.startSwipeSensor((d, diff) => {
@@ -78,7 +67,6 @@ function Generator(props) {
     }, []);
   }
 
-  // Shake
   if (props.shakingEnabled) {
     useEffect(() => {
       sensors.startShakeSensor((magnitude) => {
@@ -88,15 +76,13 @@ function Generator(props) {
     }, []);
   }
 
-  const onTap = (e) => {
-    // Tapping
+  const onTap = () => {
     if (ENABLE_TAPPING) {
       props.generatePower(TAP_POWER, true);
     }
   };
 
-  const onClick = (e) => {
-    // Clicking
+  const onClick = () => {
     if (!IS_TOUCH_DEVICE && ENABLE_TAPPING) {
       props.generatePower(TAP_POWER, true);
     }
@@ -104,8 +90,15 @@ function Generator(props) {
 
   return (
     <>
-      <GeneratorDiv generated={props.generated} color={props.color}>
-        <Turbine onTap={onTap} onClick={onClick} />
+      <GeneratorDiv>
+        <BadgeImage
+          src="./kcd-lima-2026.png"
+          alt="KCD Lima 2026"
+          id="generator"
+          generated={props.generated}
+          onTouchStart={onTap}
+          onClick={onClick}
+        />
       </GeneratorDiv>
       <GeneratedIndicatorDiv
         unit={powerApi.humanPowerUnit(props.generated)}

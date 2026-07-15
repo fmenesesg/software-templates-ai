@@ -2,6 +2,9 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { TEAMS_CONFIG } from '../../Config';
 
+const TRACK_WIDTH = 1024;
+const TRACK_HEIGHT = 682;
+
 const RaceDiv = styled.div`
   text-align: center;
   display: flex;
@@ -19,41 +22,37 @@ const RaceDiv = styled.div`
   
   .car {
     transition: offset-distance 2000ms linear;
-    
+    image-rendering: pixelated;
   }
   
   #car1 {
-    offset-path: path('M 745 243 Q 750 340 750 420 Q 695 515 560 470 Q 490 350 420 360 Q 350 350 310 420 Q 240 510 180 450 L 80 270 Q 70 200 120 150 L 270 90 Q 310 70 350 90 L 410 110 Q 470 110 510 80 L 570 40 Q 600 20 640 20 Q 670 30 700 50 Q 720 80 720 110 Q 740 180 750 320 ');
+    offset-path: path('M 981.8 319.9 Q 988.4 447.6 988.4 553.0 Q 915.9 678.1 738.0 618.8 Q 645.8 460.8 553.5 474.0 Q 461.3 460.8 408.5 553.0 Q 316.3 671.5 237.2 592.5 L 105.4 355.5 Q 92.3 263.3 158.1 197.5 L 355.8 118.5 Q 408.5 92.2 461.3 118.5 L 540.3 144.8 Q 619.4 144.8 672.1 105.3 L 751.2 52.7 Q 790.7 26.3 843.4 26.3 Q 883.0 39.5 922.5 65.8 Q 948.9 105.3 948.9 144.8 Q 975.2 237.0 988.4 421.3');
     offset-distance: ${(props) => `${props.distance1}%`};
-    transform-origin: 25px 14px;
+    transform-origin: 35px 60px;
   }
   #car2 {
-    offset-path: path('M 720 230 Q 735 335 720 430 Q 670 490 570 440 Q 505 335 420 330 Q 330 330 290 410 Q 240 490 190 415 L 105 260 Q 90 195 150 160 L 280 110 Q 310 90 350 110 L 420 130 Q 480 130 530 100 L 590 60 Q 610 40 640 40 Q 690 80 705 115 Q 720 180 720 320 ');
+    offset-path: path('M 948.9 302.8 Q 968.6 441.1 948.9 566.1 Q 883.0 645.1 751.2 579.3 Q 665.5 441.1 553.5 434.5 Q 434.9 434.5 382.2 539.8 Q 316.3 645.1 250.4 546.4 L 138.4 342.3 Q 118.6 256.7 197.7 210.7 L 369.0 144.8 Q 408.5 118.5 461.3 144.8 L 553.5 171.2 Q 632.6 171.2 698.5 131.7 L 777.6 79.0 Q 803.9 52.7 843.4 52.7 Q 909.3 105.3 929.1 151.4 Q 948.9 237.0 948.9 421.3');
     offset-distance: ${(props) => `${props.distance2}%`};
-    transform-origin: 25px 14px;
-  }
-  #car3 {
-    offset-distance: ${(props) => `${props.distance3}%`};
-    transform-origin: 25px 14px;
+    transform-origin: 35px 60px;
   }
 `;
 
 function RaceTrackSvg(props) {
   return (
     <svg
-      width={777}
-      height={518}
-      viewBox="0 0 777 518"
+      width={TRACK_WIDTH}
+      height={TRACK_HEIGHT}
+      viewBox={`0 0 ${TRACK_WIDTH} ${TRACK_HEIGHT}`}
       xmlSpace="preserve"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
       <image
-        width={777}
-        height={518}
-        preserveAspectRatio="none"
-        xlinkHref="race-track-1.png"
+        width={TRACK_WIDTH}
+        height={TRACK_HEIGHT}
+        preserveAspectRatio="xMidYMid meet"
+        xlinkHref="machu-picchu-circuit.png"
       />
 
       <g className="car" id="car1">

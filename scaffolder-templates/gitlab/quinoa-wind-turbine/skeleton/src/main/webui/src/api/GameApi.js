@@ -92,7 +92,6 @@ export function events(setStatus, reset) {
     };
   }
   connect();
-  sendEvent('reset');
   return () => {
     if (stream) {
       console.log('Disconnecting from game event stream');

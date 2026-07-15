@@ -6,7 +6,7 @@ import { Trophy, CloudOffline } from '@styled-icons/ionicons-outline';
 import { Plug, Reset } from '@styled-icons/boxicons-regular';
 import { gameApi, powerApi } from '../../api';
 import StopWatch from './StopWatch';
-import { SHOW_TOP, TEAMS_CONFIG } from '../../Config';
+import { SHOW_TOP, TEAM_LABELS_ES, TEAMS_CONFIG } from '../../Config';
 import { sortTeams } from './DashboardUtils';
 
 const Title = styled.h1`
@@ -142,11 +142,7 @@ function Team(props) {
       <Header style={{ color: teamConfig.color }}>
         <span>
           {props.winner === props.id && <Trophy size={32} />}
-          Team
-          {' '}
-          <br />
-          {' '}
-          {teamConfig.name}
+          {TEAM_LABELS_ES[props.id - 1]}
         </span>
         {props.winner < 0 && <span className="total-power">{powerApi.humanPower(props.generated)}</span>}
         {props.time && <span><StopWatch time={props.time} running={false} /></span>}
@@ -166,7 +162,7 @@ function Team(props) {
             {' '}
             {powerApi.humanPower(u.generated)}
           </li>
-        )) : (<li>Waiting for players...</li>)}
+        )) : (<li>Esperando jugadores...</li>)}
       </ol>
     </div>
   );
@@ -194,7 +190,7 @@ export default function LeftBar(props) {
   sortTeams(teamDef);
   return (
     <LeftBarDiv>
-      <Title>The Race</Title>
+      <Title>La Carrera</Title>
       <Teams>
         {teamDef.map((d) => (<StyledTeam key={d.id} {...d} winner={winner} />))}
       </Teams>

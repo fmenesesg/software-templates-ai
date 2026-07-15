@@ -31,13 +31,6 @@ const TeamDiv = styled.div`
   font-size: 1.5rem;
   font-weight: bold;
   line-height: 1.5rem;
-
-  &:before {
-    content: 'Team';
-    font-size: 0.7rem;
-    line-height: 1rem;
-    font-weight: bold;
-  }
 `;
 
 const UserDiv = styled.div`

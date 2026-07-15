@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { gameApi, powerApi, sensors } from '../../api';
 import Generator from './Generator';
-import { ENABLE_SHAKING, TEAMS_CONFIG } from '../../Config';
+import { ENABLE_SHAKING, TEAM_LABELS_ES, TEAMS_CONFIG } from '../../Config';
 import TopBar from './TopBar';
 import EnableShakingModal from './EnableShakingModal';
 import ChooseTeamModal from './ChooseTeamModal';
@@ -28,7 +28,9 @@ const LoadingDiv = styled.div`
   font-size: 2rem;
 
   img {
-    height: 40px;
+    height: 72px;
+    width: auto;
+    image-rendering: pixelated;
     animation: spin 3s linear infinite;
   }
 
@@ -52,7 +54,6 @@ function StatusContent(props) {
       return (
         <Generator
           generatePower={props.generatePower}
-          color={props.color}
           generated={props.generated}
           shakingEnabled={props.shakingEnabled}
         />
@@ -65,7 +66,7 @@ function StatusContent(props) {
       return (
         <LoadingDiv>
           <div><img src={`./${TEAMS_CONFIG[props.user.team - 1].car}.png`} /></div>
-          <div>Waiting for game...</div>
+          <div>Esperando partida…</div>
         </LoadingDiv>
       );
   }
@@ -115,7 +116,7 @@ export default function GameController() {
   useEffect(() => gameApi.status(setStatus, reset), []);
   const teamConfig = user && TEAMS_CONFIG[user.team - 1];
   const teamColor = teamConfig && teamConfig.color;
-  const teamName = teamConfig && teamConfig.name;
+  const teamName = user && TEAM_LABELS_ES[user.team - 1];
   return (
     <Container>
       {user && (
@@ -125,7 +126,6 @@ export default function GameController() {
             user={user}
             status={status}
             generatePower={generatePower}
-            color={teamColor}
             generated={generated}
             shakingEnabled={shakingEnabled}
           />

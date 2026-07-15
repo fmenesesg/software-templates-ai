@@ -33,3 +33,6 @@ node_modules
 .vscode
 .quarkus
 **/.quinoa
+
+# SDD agent cache (local, not shareable)
+.atl/

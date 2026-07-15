@@ -39,7 +39,7 @@ export default function EnableShakingModal(props) {
     <EnableShakingOverlay>
       <EnableShakingButton onClick={props.onClick}>
         <MobileVibration size={80} />
-        Enable Shaking
+        Activar sacudida
       </EnableShakingButton>
     </EnableShakingOverlay>
   );
