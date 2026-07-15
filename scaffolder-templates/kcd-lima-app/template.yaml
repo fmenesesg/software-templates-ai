@@ -82,6 +82,7 @@ spec:
       input:
         repoContentsUrl: ${{ steps.publishSource.output.repoContentsUrl }}
         catalogInfoPath: /catalog-info.yaml
+        optional: true
 
     - id: templateGitops
       name: Generating the deployment resources and artifacts
