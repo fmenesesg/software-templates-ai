@@ -117,13 +117,16 @@ spec:
 
     - id: createArgoResources
       name: Create ArgoCD Resources
-      action: kcd-lima:create-resources
+      action: argocd:create-resources
       input:
+        # Destination must be argocd: gitops manifests (Application/Secret) live in the argocd namespace.
+        # Workload namespace is set on the child Application (project: default).
         appName: ${{ parameters.namespace }}-app-bootstrap
         argoInstance: kind-local
-        namespace: ${{ parameters.namespace }}
+        namespace: argocd
         repoUrl: https://github.com/${{ parameters.githubOrg }}/${{ parameters.namespace }}-app-gitops.git
         path: argocd/
+        labelValue: ${{ parameters.namespace }}-app
 
   output:
     links:
