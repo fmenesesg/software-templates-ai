@@ -117,7 +117,7 @@ spec:
 
     - id: createArgoResources
       name: Create ArgoCD Resources
-      action: backstage-community-argocd:create-resources
+      action: kcd-lima:create-resources
       input:
         appName: ${{ parameters.namespace }}-app-bootstrap
         argoInstance: kind-local
