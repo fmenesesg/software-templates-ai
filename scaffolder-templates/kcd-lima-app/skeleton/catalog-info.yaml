@@ -7,6 +7,8 @@ metadata:
   {%- endif %}
   annotations:
     argocd/app-name: ${{values.component_id}}-dev
+    argocd/app-namespace: argocd
+    argocd/instance-name: kind-local
     backstage.io/kubernetes-id: ${{values.component_id}}
     backstage.io/kubernetes-namespace: ${{values.namespace}}
     backstage.io/techdocs-ref: dir:.
