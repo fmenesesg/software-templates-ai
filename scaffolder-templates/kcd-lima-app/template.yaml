@@ -108,7 +108,6 @@ spec:
       action: publish:github
       input:
         repoUrl: github.com?owner=${{ parameters.githubOrg }}&repo=${{ parameters.namespace }}-app-gitops
-        title: gitops resources for ${{ parameters.namespace }}-app
         description: gitops resources for ${{ parameters.namespace }}-app
         sourcePath: ./tenant-gitops
         defaultBranch: main
