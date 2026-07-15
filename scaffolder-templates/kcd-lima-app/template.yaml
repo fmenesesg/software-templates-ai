@@ -70,8 +70,6 @@ spec:
       action: publish:github
       input:
         sourcePath: ./source
-        allowedHosts:
-          - github.com
         description: ${{ parameters.description }}
         repoUrl: github.com?owner=${{ parameters.githubOrg }}&repo=${{ parameters.namespace }}-app
         defaultBranch: main
