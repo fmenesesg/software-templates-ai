@@ -1,0 +1,138 @@
+apiVersion: scaffolder.backstage.io/v1beta3
+kind: Template
+metadata:
+  name: kcd-lima-app-template
+  title: KCD Lima App — Software Supply Chain
+  description: KCD Lima App (Quarkus game) — GitHub, GHCR, Argo CD, shared Kafka/Infinispan on Kind
+  tags:
+    - java
+    - quarkus
+    - quinoa
+    - maven
+    - game
+    - demo
+    - kcd-lima
+spec:
+  owner: rhdeveloper-workshop-authors
+  type: service
+
+  parameters:
+    - title: GitHub location
+      required:
+        - githubOrg
+        - namespace
+      properties:
+        githubOrg:
+          title: GitHub user or org
+          type: string
+          description: Owner for new repositories (your GitHub username or org)
+        namespace:
+          title: App namespace
+          type: string
+          description: Kubernetes namespace for the app
+          default: kcd-lima
+        description:
+          title: Description
+          type: string
+          description: Component description
+          default: KCD Lima App
+    - title: Container image (GHCR)
+      required:
+        - image_tag
+      properties:
+        image_host:
+          title: Registry
+          type: string
+          default: ghcr.io
+          enum:
+            - ghcr.io
+        image_tag:
+          title: Image tag
+          type: string
+          default: latest
+
+  steps:
+    - id: templateSource
+      name: Generating the source code component
+      action: fetch:template
+      input:
+        url: ./skeleton
+        targetPath: ./source
+        values:
+          githubOrg: ${{ parameters.githubOrg }}
+          repoName: ${{ parameters.namespace }}-app
+          owner: ${{ user.entity.metadata.name }}
+          namespace: ${{ parameters.namespace }}
+          component_id: ${{ parameters.namespace }}-app
+
+    - id: publishSource
+      name: Publishing to Source Code Repository
+      action: publish:github
+      input:
+        sourcePath: ./source
+        allowedHosts:
+          - github.com
+        description: ${{ parameters.description }}
+        repoUrl: github.com?owner=${{ parameters.githubOrg }}&repo=${{ parameters.namespace }}-app
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+
+    - id: registerSource
+      name: Registering the Source Code Component
+      action: catalog:register
+      input:
+        repoContentsUrl: ${{ steps.publishSource.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
+
+    - id: templateGitops
+      name: Generating the deployment resources and artifacts
+      action: fetch:template
+      input:
+        url: ./manifests
+        values:
+          component_id: ${{ parameters.namespace }}-app
+          description: ${{ parameters.description }}
+          destination: https://github.com/${{ parameters.githubOrg }}/${{ parameters.namespace }}-app-gitops
+          source_repository: https://github.com/${{ parameters.githubOrg }}/${{ parameters.namespace }}-app
+          repository_name: ${{ parameters.namespace }}-app
+          git_owner: ${{ parameters.githubOrg }}
+          namespace: ${{ parameters.namespace }}
+          image_host: ${{ parameters.image_host }}
+          image_name: ${{ parameters.githubOrg }}/${{ parameters.namespace }}-app
+          image_tag: ${{ parameters.image_tag }}
+          kafka_bootstrap: my-cluster-kafka-bootstrap.platform.svc.cluster.local:9092
+          infinispan_host: infinispan.platform.svc.cluster.local
+        targetPath: ./tenant-gitops
+
+    - id: publishGitops
+      name: Publishing to Deployment Resource Repository
+      action: publish:github
+      input:
+        repoUrl: github.com?owner=${{ parameters.githubOrg }}&repo=${{ parameters.namespace }}-app-gitops
+        title: gitops resources for ${{ parameters.namespace }}-app
+        description: gitops resources for ${{ parameters.namespace }}-app
+        sourcePath: ./tenant-gitops
+        defaultBranch: main
+        protectDefaultBranch: false
+        repoVisibility: public
+
+    - id: createArgoResources
+      name: Create ArgoCD Resources
+      action: backstage-community-argocd:create-resources
+      input:
+        appName: ${{ parameters.namespace }}-app-bootstrap
+        argoInstance: kind-local
+        namespace: ${{ parameters.namespace }}
+        repoUrl: https://github.com/${{ parameters.githubOrg }}/${{ parameters.namespace }}-app-gitops.git
+        path: argocd/
+
+  output:
+    links:
+      - title: Source Code Repository
+        url: ${{ steps.publishSource.output.remoteUrl }}
+      - title: GitOps Repository
+        url: ${{ steps.publishGitops.output.remoteUrl }}
+      - title: Open Component in catalog
+        icon: catalog
+        entityRef: ${{ steps.registerSource.output.entityRef }}

@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.app.componentId }}
+  labels:
+    {{- include "quarkus-template.labels" . | nindent 4 }}
+    app.kubernetes.io/part-of: kcd-lima-app
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "quarkus-template.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "quarkus-template.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "quarkus-template.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: QUARKUS_PROFILE
+              value: kind-cluster
+            - name: INFINISPAN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: infinispan-generated-secret
+                  key: password
+          ports:
+            - containerPort: {{ .Values.service.port }}
+              protocol: TCP
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
