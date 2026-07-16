@@ -75,6 +75,9 @@ spec:
         defaultBranch: main
         protectDefaultBranch: false
         repoVisibility: public
+        # PAT with write:packages — workflow pushes to GHCR (GITHUB_TOKEN alone can hit write_package ACL).
+        secrets:
+          GHCR_TOKEN: ${{ environment.secrets.GHCR_TOKEN }}
 
     - id: registerSource
       name: Registering the Source Code Component

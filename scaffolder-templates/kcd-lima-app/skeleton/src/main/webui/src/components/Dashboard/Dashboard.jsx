@@ -41,16 +41,13 @@ function Dashboard(props) {
     if (status === 'started' && result.team1 && result.team2) {
       setRank((prev) => {
         if (prev.winner < 0) {
-          const r = computeRank(result, team1, team2);
-          // Delay both the finish event and showing the winner popup
-          // to allow cars to cross the finish line first
-          // The car animation takes 2000ms (see RaceTrack.jsx line 21)
+          // Delay showing winner popup to allow cars to cross finish line
           setTimeout(() => {
+            const r = computeRank(result, team1, team2);
             gameApi.sendEvent('finish', { overall: r.overall });
             setRank(r);
-          }, 2000);
-          // Return a placeholder to prevent re-triggering
-          return { winner: 0 };
+          }, 2000); // 2 second delay to match car animation duration
+          return prev;
         }
         return prev;
       });

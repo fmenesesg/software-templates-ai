@@ -4,23 +4,25 @@ export const IS_TOUCH_DEVICE = (('ontouchstart' in window)
     || (navigator.maxTouchPoints > 0)
     || (navigator.msMaxTouchPoints > 0));
 
-// available cars images: 'car-classic-black', 'car-barbie', 'car-grey', 'car-red', 'car-blue-convertible', 'car-orange'
+// available runner sprites: 'car-blue', 'car-red'
 export const TEAMS_CONFIG = [
   {
-    name: 'Mountains',
-    color: 'grey',
-    car: 'car-orange',
+    name: 'Blue Team',
+    color: '#2E6DA4',
+    car: 'car-blue',
   },
   {
-    name: 'Beach',
-    color: 'skyblue',
-    car: 'car-blue-convertible',
+    name: 'Red Team',
+    color: '#C0392B',
+    car: 'car-red',
   },
 ];
 
+export const TEAM_LABELS_ES = ['Equipo Azul', 'Equipo Rojo'];
+
 // Dashboard
 export const TAP_POWER = 15; // in MW
-export const NB_TAP_NEEDED_PER_USER = 150;
+export const NB_TAP_NEEDED_PER_USER = 100;
 export const SHOW_TOP = 5;
 
 // Mobile app
