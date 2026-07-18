@@ -1,0 +1,13 @@
+---
+description: OpenSpec / SDD workflow and artifact layout for this repo
+globs: openspec/**/*
+alwaysApply: false
+---
+
+# OpenSpec & SDD
+
+- **Config**: `openspec/config.yaml` defines `strict_tdd`, phase rules, and testing commands for this stack (Quarkus + Quinoa/React).
+- **Changes** live under `openspec/changes/<change-name>/` with `proposal.md`, `specs/`, `design.md`, `tasks.md`, and later `verify-report.md` / archive.
+- **Main specs** (source of truth after archive): `openspec/specs/<domain>/spec.md`.
+- When the user says **sdd-init**, **sdd-spec**, **sdd-verify**, **sdd-archive**, etc., load the matching skill from `.cursor/skills/` and follow it; do not improvise a different workflow.
+- Prefer **Given / When / Then** scenarios and RFC 2119 language in new specs.

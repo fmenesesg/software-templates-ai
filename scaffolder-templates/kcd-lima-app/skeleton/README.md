@@ -97,3 +97,12 @@ En Kind (demo KCD), la imagen se publica a GHCR y Argo CD la sincroniza desde el
 ## Más docs
 
 - TechDocs: [`docs/index.md`](docs/index.md)
+
+## Agentic / OpenSpec
+
+This repo includes Cursor OpenSpec/SDD tooling:
+
+- `.cursor/skills/` — SDD phases (`sdd-init` … `sdd-archive`) and helpers
+- `.cursor/rules/` — workflow + Quarkus/Chasquis conventions
+- `openspec/config.yaml` — strict TDD and `./mvnw test`
+- `AGENTS.md` — default agent instructions

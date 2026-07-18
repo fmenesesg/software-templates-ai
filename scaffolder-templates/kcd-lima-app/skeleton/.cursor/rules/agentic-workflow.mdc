@@ -1,0 +1,12 @@
+---
+description: Agentic AI practices — skills, subagents, hooks
+globs: "**/*"
+alwaysApply: true
+---
+
+# Agentic workflow defaults
+
+- **Skills**: Project skills live in `.cursor/skills/` (SDD phases, PR/issue helpers, `create-rule`, `create-hook`, `create-subagent`). Invoke them when the user’s intent matches the skill description.
+- **Subagents**: Use exploration or focused sub-tasks for large refactors; keep the main thread for integration and summary.
+- **Hooks**: Project hooks are defined in `.cursor/hooks.json` and scripts under `.cursor/hooks/` — respect them when editing hook contracts.
+- **Execution**: Prefer real commands (`./mvnw test`, `./mvnw package`) over suggesting-only; this repo is a demo for **verifiable** agent workflows.

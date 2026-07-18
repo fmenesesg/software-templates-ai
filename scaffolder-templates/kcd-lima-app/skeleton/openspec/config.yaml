@@ -1,0 +1,55 @@
+# OpenSpec / SDD — KCD Lima App (Carrera de Chasquis)
+schema: spec-driven
+
+context: |
+  Tech stack: Java 17+, Quarkus 3, Maven Wrapper (./mvnw)
+  Frontend: Quinoa + React (Vite) under src/main/webui
+  Messaging: Kafka topics power + game-events; Infinispan for shared state
+  Product: Carrera de Chasquis (player UI `/`, dashboard `/dashboard`)
+
+strict_tdd: true
+
+rules:
+  proposal:
+    - Include rollback plan for risky changes
+    - Identify affected modules and public surfaces (REST `/api`, UI routes, env/profiles)
+  specs:
+    - Use Given/When/Then format for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Document architecture decisions with rationale
+    - Keep Chasquis / KCD Lima branding (webui assets + Config.js teams)
+  tasks:
+    - Group tasks by phase (foundation, backend, UI, testing, verification)
+    - Use hierarchical numbering (1.1, 1.2, …)
+  apply:
+    - Follow existing patterns in src/main/java and src/main/webui
+    - Prefer small, reviewable diffs
+  verify:
+    - Run `./mvnw test` before claiming done
+    - Compare implementation against every spec scenario
+  archive:
+    - Warn before merging destructive deltas (large removals)
+
+testing:
+  strict_tdd: true
+  runner:
+    command: ./mvnw test
+    framework: JUnit 5 (Quarkus)
+  layers:
+    unit:
+      available: true
+      tool: JUnit 5
+    integration:
+      available: true
+      tool: Quarkus @QuarkusTest
+    e2e:
+      available: false
+      tool: optional browser later
+  quality:
+    type_checker:
+      available: true
+      command: ./mvnw -DskipTests compile
+    linter:
+      available: false
+      command: optional Checkstyle later

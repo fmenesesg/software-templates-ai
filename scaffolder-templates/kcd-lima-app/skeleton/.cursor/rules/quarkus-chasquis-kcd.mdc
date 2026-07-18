@@ -1,0 +1,15 @@
+---
+description: Quarkus + Chasquis (KCD Lima) app conventions
+globs: "src/**/*.{java,jsx,js,css,properties},pom.xml"
+alwaysApply: false
+---
+
+# Quarkus / Chasquis — KCD Lima
+
+- **Backend**: Quarkus 3, Maven (`./mvnw`). REST under `/api` (`GameResource`, `PowerResource`).
+- **Frontend**: Quinoa embeds Vite/React from `src/main/webui`. Routes: `/` (player), `/dashboard` (operator, form auth).
+- **Config**: `src/main/resources/application.properties` + profiles (`kind-cluster`, etc.). Team/UI knobs in `src/main/webui/src/Config.js`.
+- **Messaging**: Kafka topics `power` and `game-events`; Infinispan counters/shared state — do not invent alternate stores without an OpenSpec change.
+- **Auth**: Dashboard uses Quarkus form login (`developer` / demo password in properties). Do not weaken auth casually.
+- **Testing**: Prefer `./mvnw test` (JUnit / `@QuarkusTest`). Keep UI changes demo-safe (Spanish labels where already used).
+- **Scope**: Prefer minimal diffs; this repo is a booth golden-path app, not a greenfield rewrite.
